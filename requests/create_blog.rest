@@ -19,3 +19,15 @@ Content-Type: application/json
     "url": "https://www.google.com",
     "likes": "12"
 }
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Happy Days 2",
+    "author": "Sarah",
+    "url": "https://www.google.com",
+    "likes": 12121
+}
