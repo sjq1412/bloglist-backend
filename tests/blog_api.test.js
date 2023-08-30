@@ -60,4 +60,27 @@ describe('blogs api', () => {
     expect(blog.id).toBeDefined()
     expect(blog._id).not.toBeDefined()
   })
+
+  test('can create a new blog', async () => {
+    const newBlog = {
+      title: 'made from test',
+      author: 'Sarah',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogs = await Blog.find({})
+    const blogsAtEnd = blogs.map(blog => blog.toJSON())
+
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
+
+    const contents = blogsAtEnd.map(blog => blog.title)
+
+    expect(contents).toContain('made from test')
+  })
 })
