@@ -39,11 +39,25 @@ describe('blogs api', () => {
   }, 50000)
 
   test('all blogs are returned', async () => {
-    const blogs = await api
+    const response = await api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(blogs.body).toHaveLength(initialBlogs.length)
+    const blogs = response.body
+    expect(blogs).toHaveLength(initialBlogs.length)
+  })
+
+  test('a blog has "id" property and not "_id"', async () => {
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogs = response.body
+    const blog = blogs[0]
+
+    expect(blog.id).toBeDefined()
+    expect(blog._id).not.toBeDefined()
   })
 })
