@@ -1,5 +1,5 @@
 // npm run test tests/blog_api.js
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
@@ -27,17 +27,17 @@ const initialBlogs = [
   }
 ]
 
+beforeEach(async () => {
+
+  await Blog.deleteMany({})
+
+  const blogObjects = initialBlogs.map(blog => new Blog(blog))
+
+  const promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
+}, 50000)
+
 describe('blogs api', () => {
-  beforeEach(async () => {
-
-    await Blog.deleteMany({})
-
-    const blogObjects = initialBlogs.map(blog => new Blog(blog))
-
-    const promiseArray = blogObjects.map(blog => blog.save())
-    await Promise.all(promiseArray)
-  }, 50000)
-
   test('all blogs are returned', async () => {
     const response = await api
       .get('/api/blogs')
@@ -83,4 +83,30 @@ describe('blogs api', () => {
 
     expect(contents).toContain('made from test')
   })
+})
+
+describe('deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogs = await Blog.find({})
+    const blogsAtStart = blogs.map(blog => blog.toJSON())
+    const blogToDelete = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogs2 = await Blog.find({})
+    const blogsAtEnd = blogs2.map(blog => blog.toJSON())
+
+    expect(blogsAtEnd).toHaveLength(
+      initialBlogs.length - 1
+    )
+
+    const contents = blogsAtEnd.map(blog => blog.title)
+    expect(contents).not.toContain(blogToDelete.title)
+  })
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
 })
