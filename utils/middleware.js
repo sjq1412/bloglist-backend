@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
 const logger = require('./logger')
 
@@ -39,6 +41,16 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
+const userExtractor = async (request, response, next) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken?.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  request.user = await User.findById(decodedToken.id)
+  next()
+}
+
 const unknownEndpoint = (request, response, next) => {
   response.status(404).json({
     error: 'Unknown endpoint'
@@ -49,5 +61,6 @@ module.exports = {
   requestLogger,
   errorHandler,
   unknownEndpoint,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 }
