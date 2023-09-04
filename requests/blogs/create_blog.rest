@@ -26,8 +26,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Happy Days 2",
+    "title": "hello hello",
     "author": "Sarah",
     "url": "https://www.google.com",
-    "likes": 12121
+    "likes": 1,
+    "userId": "64f5df37d58804060e3fe137"
 }
