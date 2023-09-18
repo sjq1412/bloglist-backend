@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const loginRouter = require('./controllers/login')
 const usersRouter = require('./controllers/users')
 const blogsRouter = require('./controllers/blogs')
+const testingRouter = require('./controllers/testing')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 
@@ -26,6 +27,10 @@ app.use(express.json())
 
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
+
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', testingRouter)
+}
 
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
