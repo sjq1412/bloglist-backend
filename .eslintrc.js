@@ -1,53 +1,30 @@
 module.exports = {
-  'env': {
-    'node': true,
-    'commonjs': true,
-    'es2021': true,
-    'jest': true
+  env: {
+    browser: true,
+    commonjs: true,
+    es2021: true,
   },
-  'extends': 'eslint:recommended',
-  'overrides': [
+  extends: ['airbnb-base', 'plugin:jest/recommended'],
+  overrides: [
     {
-      'env': {
-        'node': true
+      env: {
+        node: true,
       },
-      'files': [
-        '.eslintrc.{js,cjs}'
-      ],
-      'parserOptions': {
-        'sourceType': 'script'
-      }
-    }
+      files: ['.eslintrc.{js,cjs}'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
   ],
-  'parserOptions': {
-    'ecmaVersion': 'latest'
+  plugins: ['prettier', 'jest'],
+  parserOptions: {
+    ecmaVersion: 'latest',
   },
-  'rules': {
-    'indent': [
-      'error',
-      2
-    ],
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
-    'quotes': [
-      'error',
-      'single'
-    ],
-    'semi': [
-      'error',
-      'never'
-    ],
-    'eqeqeq': 'error',
-    'no-trailing-spaces': 'error',
-    'object-curly-spacing': [
-      'error', 'always'
-    ],
-    'arrow-spacing': [
-      'error', { 'before': true, 'after': true }
-    ],
-    'no-console': 0
+  rules: {
+    'prettier/prettier': 'error',
+    'no-underscore-dangle': ['error', { allow: ['_id', '__v'] }],
+    'no-param-reassign': ['error', { props: false }],
+    'operator-linebreak': ['error', 'before'],
+    'implicit-arrow-linebreak': 'off',
   },
-
-}
+};

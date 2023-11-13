@@ -1,4 +1,4 @@
-const listHelper = require('../utils/list_helper')
+const listHelper = require('../utils/list_helper');
 
 const blogs = [
   {
@@ -7,7 +7,7 @@ const blogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422aa71b54a676234d17f8',
@@ -15,7 +15,7 @@ const blogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422b3a1b54a676234d17f9',
@@ -23,7 +23,7 @@ const blogs = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
     likes: 12,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422b891b54a676234d17fa',
@@ -31,7 +31,7 @@ const blogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
     likes: 10,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422ba71b54a676234d17fb',
@@ -39,7 +39,7 @@ const blogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
     likes: 0,
-    __v: 0
+    __v: 0,
   },
   {
     _id: '5a422bc61b54a676234d17fc',
@@ -47,9 +47,9 @@ const blogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
     likes: 2,
-    __v: 0
-  }
-]
+    __v: 0,
+  },
+];
 
 const listWithOneBlog = [
   {
@@ -58,45 +58,50 @@ const listWithOneBlog = [
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
-    __v: 0
-  }
-]
+    __v: 0,
+  },
+];
 
 test('dummy returns 1', () => {
-  const blogs = []
+  // eslint-disable-next-line no-shadow
+  const blogs = [];
 
-  const result = listHelper.dummy(blogs)
-  expect(result).toBe(1)
-})
+  const result = listHelper.dummy(blogs);
+  expect(result).toBe(1);
+});
 
 // npx jest -t "total likes"
 describe('total likes', () => {
   test('of empty list is zero', () => {
-    expect(listHelper.totalLikes([])).toBe(0)
-  })
+    expect(listHelper.totalLikes([])).toBe(0);
+  });
 
   test('when list has only one blog equals the likes of that', () => {
-    expect(listHelper.totalLikes(listWithOneBlog)).toBe(listWithOneBlog[0].likes)
-  })
+    expect(listHelper.totalLikes(listWithOneBlog)).toBe(
+      listWithOneBlog[0].likes,
+    );
+  });
 
   test('of a bigger list is calculated right', () => {
-    const totalLikes = listHelper.totalLikes(blogs)
-    expect(totalLikes).toBe(36)
-  })
-})
+    const totalLikes = listHelper.totalLikes(blogs);
+    expect(totalLikes).toBe(36);
+  });
+});
 
 // npx jest -t "favorite blog"
 describe('favorite blog', () => {
   test('of empty list is null', () => {
-    expect(listHelper.favoriteBlog([])).toEqual(null)
-  })
+    expect(listHelper.favoriteBlog([])).toEqual(null);
+  });
 
   test('when list has only one blog equals that blog', () => {
-    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual(listWithOneBlog[0])
-  })
+    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual(
+      listWithOneBlog[0],
+    );
+  });
 
   test('of a bigger list returns blog with the highest likes', () => {
-    const result = listHelper.favoriteBlog(blogs)
-    expect(result).toEqual(blogs[2])
-  })
-})
+    const result = listHelper.favoriteBlog(blogs);
+    expect(result).toEqual(blogs[2]);
+  });
+});
