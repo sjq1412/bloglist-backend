@@ -30,6 +30,8 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     author: body.author,
     url: body.url,
     user: user._id,
+    likes: 0,
+    comments: [],
   });
 
   const savedBlog = await blog.save();
@@ -41,6 +43,38 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   await user.save();
 
   response.status(201).json(blogWithUser);
+});
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { body } = request;
+
+  if (!body.comment) {
+    return response.status(400).json({ error: 'comment must not be empty' });
+  }
+  const { comment } = body;
+
+  const blog = await Blog.findById(request.params.id);
+  if (!blog) {
+    return response.status(400).json({ error: 'blog was not found.' });
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    {
+      $push: { comments: comment },
+    },
+    {
+      new: true,
+      runValidators: true,
+      context: 'query',
+    },
+  );
+
+  const updatedBlogWithUser = await updatedBlog.populate('user', {
+    username: 1,
+    name: 1,
+  });
+  return response.json(updatedBlogWithUser);
 });
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {

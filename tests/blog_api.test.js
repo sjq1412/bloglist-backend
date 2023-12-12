@@ -60,6 +60,7 @@ describe('blogs api', () => {
     expect(blog._id).not.toBeDefined();
   });
 
+  // TODO: Authorize a user first
   test('can create a new blog', async () => {
     const newBlog = {
       title: 'made from test',
@@ -81,6 +82,25 @@ describe('blogs api', () => {
     const contents = blogsAtEnd.map((blog) => blog.title);
 
     expect(contents).toContain('made from test');
+  });
+
+  // TODO: Make this work
+  test('can add a comment to a blog', async () => {
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
+    const blogs = response.body;
+
+    const blogToUpdate = blogs[0];
+    const comment = 'i like this blog!!';
+
+    const result = await api.put(`/api/blogs/${blogToUpdate.id}`).send({
+      ...blogToUpdate,
+      comments: blogToUpdate.comment.concat(comment),
+    });
+    expect(result.comments).toContain(comment);
   });
 });
 
